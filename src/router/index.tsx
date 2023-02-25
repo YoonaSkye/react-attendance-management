@@ -1,6 +1,13 @@
-import { lazy } from 'react';
+import React, { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import type { RouteObject } from 'react-router-dom';
+import {
+  CopyOutlined,
+  CalendarOutlined,
+  WarningOutlined,
+  FileAddOutlined,
+  ScheduleOutlined,
+} from '@ant-design/icons';
 
 // 路由页面组件 懒加载引入
 const Home = lazy(() => import('../views/Home/Home'));
@@ -9,34 +16,94 @@ const Check = lazy(() => import('../views/Check/Check'));
 const Exception = lazy(() => import('../views/Exception/Exception'));
 const Login = lazy(() => import('../views/Login/Login'));
 const Sign = lazy(() => import('../views/Sign/Sign'));
+// 路由守卫组件
+const AuthRouter = lazy(() => import('../components/AuthRouter'));
+
+// 扩展meta元信息接口
+declare module 'react-router' {
+  interface IndexRouteObject {
+    meta?: {
+      menu?: boolean;
+      title?: string;
+      icon?: React.ReactNode;
+      auth?: boolean;
+    };
+  }
+  interface NonIndexRouteObject {
+    meta?: {
+      menu?: boolean;
+      title?: string;
+      icon?: React.ReactNode;
+      auth?: boolean;
+    };
+  }
+}
 
 // 路由表配置
-const routes: RouteObject[] = [
+export const routes: RouteObject[] = [
   {
     path: '/',
-    element: <Home />,
+    element: (
+      <AuthRouter>
+        <Home />
+      </AuthRouter>
+    ),
+    meta: {
+      menu: true,
+      title: '考勤管理',
+      icon: <CopyOutlined />,
+      auth: true,
+    },
     children: [
       {
         path: 'apply',
         element: <Apply />,
+        meta: {
+          menu: true,
+          title: '添加考勤审批',
+          icon: <FileAddOutlined />,
+          auth: true,
+        },
       },
       {
         path: 'check',
         element: <Check />,
+        meta: {
+          menu: true,
+          title: '我的考勤审批',
+          icon: <ScheduleOutlined />,
+          auth: true,
+        },
       },
       {
         path: 'exception',
         element: <Exception />,
+        meta: {
+          menu: true,
+          title: '异常考勤查询',
+          icon: <WarningOutlined />,
+          auth: true,
+        },
       },
       {
         path: 'sign',
         element: <Sign />,
+        meta: {
+          menu: true,
+          title: '在线打卡签到',
+          icon: <CalendarOutlined />,
+          auth: true,
+        },
       },
     ],
   },
   {
     path: '/login',
-    element: <Login />,
+    element: (
+      <AuthRouter>
+        <Login />
+      </AuthRouter>
+    ),
   },
 ];
 

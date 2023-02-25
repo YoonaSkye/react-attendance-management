@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 // 路由
@@ -10,6 +10,8 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Suspense fallback={<div>Loadinng</div>}>
+      <RouterProvider router={router} />
+    </Suspense>
   </React.StrictMode>
 );
