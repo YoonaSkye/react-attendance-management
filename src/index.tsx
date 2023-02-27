@@ -1,6 +1,8 @@
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import './assets/styles/normalize.scss';
+import './assets/styles/iconfont.scss';
+import './assets/styles/common.scss';
 // 路由
 import { RouterProvider } from 'react-router-dom';
 import router from './router';
