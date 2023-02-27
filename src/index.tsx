@@ -5,8 +5,9 @@ import './index.css';
 import { RouterProvider } from 'react-router-dom';
 import router from './router';
 // redux store
-import { store } from './store';
+import { store, persistor } from './store';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -14,9 +15,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Suspense fallback={<div>Loadinng</div>}>
-      <Provider store={store}>
-        <RouterProvider router={router} />
-      </Provider>
+      <PersistGate loading={null} persistor={persistor}>
+        <Provider store={store}>
+          <RouterProvider router={router} />
+        </Provider>
+      </PersistGate>
     </Suspense>
   </React.StrictMode>
 );

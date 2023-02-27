@@ -2,7 +2,7 @@ import axios from 'axios';
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 const instnce = axios.create({
-  baseURL: 'http://api.h5ke.top/',
+  baseURL: 'http://api.h5ke.top',
   timeout: 5000,
 });
 
