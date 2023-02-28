@@ -1,5 +1,5 @@
 import React, { lazy } from 'react';
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import type { RouteObject } from 'react-router-dom';
 import {
   CopyOutlined,
@@ -41,6 +41,10 @@ declare module 'react-router' {
 
 // 路由表配置
 export const routes: RouteObject[] = [
+  {
+    path: '/',
+    element: <Navigate to="/sign" />,
+  },
   {
     path: '/',
     element: (

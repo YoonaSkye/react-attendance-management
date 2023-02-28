@@ -3,7 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import http from '../../http';
 
 type Token = string;
-type Infos = {
+export type Infos = {
   [index: string]: unknown;
 };
 type UsersState = {

@@ -1,15 +1,21 @@
 import axios from 'axios';
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { store } from '../store';
+import { clearToken } from '../store/modules/users';
+import { message } from 'antd';
 
-const instnce = axios.create({
+const instance = axios.create({
   baseURL: 'http://api.h5ke.top',
   timeout: 5000,
 });
 
 // Add a request interceptor
-instnce.interceptors.request.use(
+instance.interceptors.request.use(
   function (config) {
     // Do something before request is sent
+    if (config.headers) {
+      config.headers.authorization = store.getState().users.token;
+    }
     return config;
   },
   function (error) {
@@ -19,10 +25,17 @@ instnce.interceptors.request.use(
 );
 
 // Add a response interceptor
-instnce.interceptors.response.use(
+instance.interceptors.response.use(
   function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
+    if (response.data.errmsg === 'token error') {
+      message.error('token error');
+      store.dispatch(clearToken());
+      setTimeout(() => {
+        window.location.replace('/login');
+      }, 1000);
+    }
     return response;
   },
   function (error) {
@@ -66,22 +79,22 @@ interface Http {
 
 const http: Http = {
   get(url, data, config) {
-    return instnce.get(url, {
+    return instance.get(url, {
       params: data,
       ...config,
     });
   },
   post(url, data, config) {
-    return instnce.post(url, data, config);
+    return instance.post(url, data, config);
   },
   put(url, data, config) {
-    return instnce.put(url, data, config);
+    return instance.put(url, data, config);
   },
   patch(url, data, config) {
-    return instnce.patch(url, data, config);
+    return instance.patch(url, data, config);
   },
   delete(url, data, config) {
-    return instnce.delete(url, {
+    return instance.delete(url, {
       data,
       ...config,
     });

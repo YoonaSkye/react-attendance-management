@@ -1,32 +1,10 @@
-import React, { useState } from 'react';
 import styles from './Login.module.scss';
 import loginLeft from '../../assets/images/login_left.png';
 import classNames from 'classnames';
-import { useAppDispatch, useAppSelector } from '../../store';
-import { loginAction, updateToken } from '../../store/modules/users';
+
 import LoginForm from './LoginForm';
 
 export default function Login() {
-  const token = useAppSelector((state) => state.users.token);
-  const dispatch = useAppDispatch();
-
-  // const handleLogin = () => {
-  //   dispatch(
-  //     loginAction({ email: 'huangrong@imooc.com', pass: 'huangrong' })
-  //   ).then((action) => {
-  //     console.log(action);
-  //     const { errcode, token } = (
-  //       action.payload as { [index: string]: unknown }
-  //     ).data as { [index: string]: unknown };
-  //     if (errcode === 0 && typeof token === 'string') {
-  //       dispatch(updateToken(token));
-  //       message.success('登录成功');
-  //     } else {
-  //       message.error('登录失败');
-  //     }
-  //   });
-  // };
-
   return (
     <div className={styles.login}>
       <div className={styles['login-box']}>

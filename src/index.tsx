@@ -15,13 +15,13 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
-    <Suspense fallback={<div>Loadinng</div>}>
-      <PersistGate loading={null} persistor={persistor}>
-        <Provider store={store}>
-          <RouterProvider router={router} />
-        </Provider>
-      </PersistGate>
-    </Suspense>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <Suspense fallback={<div>Loadinng</div>}>
+    <PersistGate loading={null} persistor={persistor}>
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
+    </PersistGate>
+  </Suspense>
+  // </React.StrictMode>
 );
