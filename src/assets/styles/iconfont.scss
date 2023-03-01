@@ -1,20 +1,25 @@
 @font-face {
-  font-family: 'iconfont'; /* Project id  */
-  src: url('iconfont.ttf?t=1677485244287') format('truetype');
+  font-family: "iconfont"; /* Project id  */
+  src: url('iconfont.ttf?t=1677566307909') format('truetype');
 }
 
 .iconfont {
-  font-family: 'iconfont' !important;
+  font-family: "iconfont" !important;
   font-size: 16px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-plus:before {
+  content: "\e659";
+}
+
 .icon-React:before {
-  content: '\e799';
+  content: "\e799";
 }
 
 .icon-typescript:before {
-  content: '\e6a3';
+  content: "\e6a3";
 }
+
