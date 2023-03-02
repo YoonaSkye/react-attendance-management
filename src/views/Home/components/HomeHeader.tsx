@@ -1,6 +1,9 @@
 import React from 'react';
 import styles from '../Home.module.scss';
 import classNames from 'classnames';
+import { useAppSelector, useAppDispatch } from '../../../store';
+import { clearToken } from '../../../store/modules/users';
+// antd && icons
 import { Dropdown, Badge, Avatar, Space } from 'antd';
 import type { MenuProps } from 'antd';
 import { BellOutlined } from '@ant-design/icons';
@@ -12,14 +15,27 @@ const items1: MenuProps['items'] = [
   },
 ];
 
-const items2: MenuProps['items'] = [
-  {
-    key: 1,
-    label: '暂无消息',
-  },
-];
-
 export default function HomeHeader() {
+  const name = useAppSelector((state) => state.users.infos?.name) as string;
+  const head = useAppSelector((state) => state.users.infos.head) as string;
+  const dispatch = useAppDispatch();
+  const handleLogout = () => {
+    dispatch(clearToken());
+    setTimeout(() => {
+      window.location.replace('/login');
+    });
+  };
+
+  const items2: MenuProps['items'] = [
+    {
+      key: '1',
+      label: <div>个人信息</div>,
+    },
+    {
+      key: '2',
+      label: <div onClick={handleLogout}>退出</div>,
+    },
+  ];
   return (
     <div className={styles['home-header']}>
       <span className={styles['home-header-logo']}>
@@ -44,7 +60,9 @@ export default function HomeHeader() {
           </Badge>
         </Dropdown>
         <Dropdown menu={{ items: items2 }} placement="bottom" arrow>
-          <Avatar />
+          <span>
+            <Avatar src={head} /> {name}
+          </span>
         </Dropdown>
       </Space>
     </div>

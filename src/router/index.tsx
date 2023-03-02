@@ -28,6 +28,7 @@ declare module 'react-router' {
       icon?: React.ReactNode;
       auth?: boolean;
     };
+    name?: string;
   }
   interface NonIndexRouteObject {
     meta?: {
@@ -36,6 +37,7 @@ declare module 'react-router' {
       icon?: React.ReactNode;
       auth?: boolean;
     };
+    name?: string;
   }
 }
 
@@ -47,6 +49,7 @@ export const routes: RouteObject[] = [
   },
   {
     path: '/',
+    name: 'home',
     element: (
       <AuthRouter>
         <Home />
@@ -61,6 +64,7 @@ export const routes: RouteObject[] = [
     children: [
       {
         path: 'apply',
+        name: 'apply',
         element: <Apply />,
         meta: {
           menu: true,
@@ -71,6 +75,7 @@ export const routes: RouteObject[] = [
       },
       {
         path: 'check',
+        name: 'check',
         element: <Check />,
         meta: {
           menu: true,
@@ -81,6 +86,7 @@ export const routes: RouteObject[] = [
       },
       {
         path: 'exception',
+        name: 'exception',
         element: <Exception />,
         meta: {
           menu: true,
@@ -91,6 +97,7 @@ export const routes: RouteObject[] = [
       },
       {
         path: 'sign',
+        name: 'sign',
         element: <Sign />,
         meta: {
           menu: true,

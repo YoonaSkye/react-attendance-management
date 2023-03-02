@@ -27,7 +27,6 @@ export default function LoginForm() {
 
   const onFinish = (values: User) => {
     dispatch(loginAction(values)).then((action) => {
-      console.log(action);
       const { errcode, token } = (
         action.payload as { [index: string]: unknown }
       ).data as { [index: string]: unknown };
