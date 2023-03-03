@@ -34,7 +34,7 @@ enum DetailKey {
   lateAndEarly = '迟到并早退',
 }
 
-const detailValue: Record<keyof typeof DetailKey, number> = {
+const originalDetailValue: Record<keyof typeof DetailKey, number> = {
   normal: 0,
   absent: 0,
   miss: 3,
@@ -43,11 +43,18 @@ const detailValue: Record<keyof typeof DetailKey, number> = {
   lateAndEarly: 0,
 };
 
+const originalDetailState = {
+  type: 'success' as 'success' | 'error',
+  text: '正常' as '正常' | '异常',
+};
+
 export default function Sign() {
   const [month, setMonth] = useState(date.getMonth());
   const signsInfos = useAppSelector((state) => state.signs.infos);
   const userInfos = useAppSelector((state) => state.users.infos);
   const dispatch = useAppDispatch();
+  const [detailValue, setDetailValue] = useState({ ...originalDetailValue });
+  const [detailState, setDetailState] = useState({ ...originalDetailState });
 
   useEffect(() => {
     if (_.isEmpty(signsInfos)) {
@@ -64,6 +71,59 @@ export default function Sign() {
       );
     }
   }, [signsInfos, userInfos, dispatch]);
+
+  useEffect(() => {
+    if (signsInfos.detail) {
+      const detailMonth = (signsInfos.detail as { [k: string]: unknown })[
+        preZero(month + 1)
+      ] as { [k: string]: unknown };
+      for (let key in detailMonth) {
+        switch (detailMonth[key]) {
+          case DetailKey.normal:
+            originalDetailValue.normal++;
+            break;
+          case DetailKey.absent:
+            originalDetailValue.absent++;
+            break;
+          case DetailKey.miss:
+            originalDetailValue.miss++;
+            break;
+          case DetailKey.late:
+            originalDetailValue.late++;
+            break;
+          case DetailKey.early:
+            originalDetailValue.early++;
+            break;
+          case DetailKey.lateAndEarly:
+            originalDetailValue.lateAndEarly++;
+            break;
+        }
+      }
+      setDetailValue({ ...originalDetailValue });
+
+      for (const key in originalDetailValue) {
+        if (
+          key !== 'normal' &&
+          originalDetailValue[key as keyof typeof originalDetailValue] !== 0
+        ) {
+          setDetailState({
+            type: 'error',
+            text: '异常',
+          });
+        }
+      }
+    }
+
+    return () => {
+      setDetailState({
+        type: 'success',
+        text: '正常',
+      });
+      for (let key in originalDetailValue) {
+        originalDetailValue[key as keyof typeof originalDetailValue] = 0;
+      }
+    };
+  }, [month, signsInfos]);
 
   const dateCellRender = (value: Dayjs) => {
     const month =
@@ -116,7 +176,7 @@ export default function Sign() {
           </Button>
         </Descriptions.Item>
         <Descriptions.Item label="考勤状态">
-          <Tag color="green">正常</Tag>
+          <Tag color={detailState.type}>{detailState.text}</Tag>
         </Descriptions.Item>
       </Descriptions>
       <Calendar
