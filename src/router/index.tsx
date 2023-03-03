@@ -63,6 +63,28 @@ export const routes: RouteObject[] = [
     },
     children: [
       {
+        path: 'sign',
+        name: 'sign',
+        element: <Sign />,
+        meta: {
+          menu: true,
+          title: '在线打卡签到',
+          icon: <CalendarOutlined />,
+          auth: true,
+        },
+      },
+      {
+        path: 'exception',
+        name: 'exception',
+        element: <Exception />,
+        meta: {
+          menu: true,
+          title: '异常考勤查询',
+          icon: <WarningOutlined />,
+          auth: true,
+        },
+      },
+      {
         path: 'apply',
         name: 'apply',
         element: <Apply />,
@@ -81,28 +103,6 @@ export const routes: RouteObject[] = [
           menu: true,
           title: '我的考勤审批',
           icon: <ScheduleOutlined />,
-          auth: true,
-        },
-      },
-      {
-        path: 'exception',
-        name: 'exception',
-        element: <Exception />,
-        meta: {
-          menu: true,
-          title: '异常考勤查询',
-          icon: <WarningOutlined />,
-          auth: true,
-        },
-      },
-      {
-        path: 'sign',
-        name: 'sign',
-        element: <Sign />,
-        meta: {
-          menu: true,
-          title: '在线打卡签到',
-          icon: <CalendarOutlined />,
           auth: true,
         },
       },
