@@ -22,6 +22,7 @@ import {
 import type { Infos } from '../../store/modules/signs';
 import _ from 'lodash';
 import { preZero } from '../../utils/common';
+import { useNavigate } from 'react-router-dom';
 
 let date = new Date();
 
@@ -55,6 +56,7 @@ export default function Sign() {
   const dispatch = useAppDispatch();
   const [detailValue, setDetailValue] = useState({ ...originalDetailValue });
   const [detailState, setDetailState] = useState({ ...originalDetailState });
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (_.isEmpty(signsInfos)) {
@@ -155,6 +157,10 @@ export default function Sign() {
     );
   };
 
+  const handleException = () => {
+    navigate(`/exception?month=${month + 1}`);
+  };
+
   return (
     <div>
       <Descriptions
@@ -171,9 +177,9 @@ export default function Sign() {
         ))}
 
         <Descriptions.Item label="操作">
-          <Button type="primary" size="small">
+          <Button type="primary" size="small" onClick={handleException}>
             查看详情
-          </Button>
+          </Button>{' '}
         </Descriptions.Item>
         <Descriptions.Item label="考勤状态">
           <Tag color={detailState.type}>{detailState.text}</Tag>

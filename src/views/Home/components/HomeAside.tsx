@@ -43,8 +43,8 @@ export default function HomeAside() {
   return (
     <Menu
       mode="inline"
-      defaultSelectedKeys={[path]}
-      defaultOpenKeys={[subPath]}
+      selectedKeys={[path]}
+      openKeys={[subPath]}
       items={items}
       className={styles['home-aside']}
     />
