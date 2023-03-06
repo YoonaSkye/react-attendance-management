@@ -1,7 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import http from '../../http';
 
-type Infos = {
+export type Infos = {
   [index: string]: unknown;
 };
 
@@ -9,6 +10,48 @@ type ChecksState = {
   applyList: Infos[];
   checkList: Infos[];
 };
+
+type GetApply = {
+  applicantid?: string;
+  approverid?: string;
+};
+type PostApply = {
+  applicantid: string;
+  applicantname: string;
+  approverid: string;
+  approvername: string;
+  note: string;
+  reason: string;
+  time: [string, string];
+};
+type PutApply = {
+  _id: string;
+  state: '已通过' | '未通过';
+};
+
+export const getApplyAction = createAsyncThunk(
+  'checks/getApplyAction',
+  async (payload: GetApply) => {
+    const ret = await http.get('/checks/apply', payload);
+    return ret;
+  }
+);
+
+export const postApplyAction = createAsyncThunk(
+  'checks/postApplyAction',
+  async (payload: PostApply) => {
+    const ret = await http.post('/checks/apply', payload);
+    return ret;
+  }
+);
+
+export const putApplyAction = createAsyncThunk(
+  'checks/putApplyAction',
+  async (payload: PutApply) => {
+    const ret = await http.put('/checks/apply', payload);
+    return ret;
+  }
+);
 
 const checksSlice = createSlice({
   name: 'checks',
