@@ -120,6 +120,7 @@ export default function Apply() {
         </Space>
       </Row>
       <Table
+        rowKey="_id"
         dataSource={applyList}
         columns={columns}
         className={styles['apply-table']}
