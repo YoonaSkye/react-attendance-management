@@ -14,7 +14,9 @@ let year = date.getFullYear();
 export default function Exception() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [month, setMonth] = useState(
-    Number(searchParams.get('month')) - 1 || date.getMonth()
+    searchParams.get('month')
+      ? Number(searchParams.get('month')) - 1
+      : date.getMonth()
   );
   const signsInfos = useAppSelector((state) => state.signs.infos);
   const userInfos = useAppSelector((state) => state.users.infos);
@@ -40,16 +42,16 @@ export default function Exception() {
     .fill({ value: 0, label: 0 })
     .map((item, index) => ({ value: index, label: `${index + 1}月` }));
 
-  let detail;
+  let details;
   if (signsInfos.detail) {
     const detailMonth = (signsInfos.detail as { [index: string]: unknown })[
       preZero(month + 1)
     ] as { [index: string]: string };
-    detail = Object.entries(detailMonth)
+
+    details = Object.entries(detailMonth)
       .filter((item) => item[1] !== '正常出勤')
       .sort();
   }
-  console.log(detail);
 
   const renderTime = (date: string) => {
     const ret = (
@@ -64,7 +66,7 @@ export default function Exception() {
     }
   };
 
-  const timelineItems = detail?.map((item) => ({
+  const timelineItems = details?.map((item) => ({
     children: (
       <div>
         <h3>
