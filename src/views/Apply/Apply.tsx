@@ -28,6 +28,8 @@ import _ from 'lodash';
 import 'dayjs/locale/zh-cn';
 import locale from 'antd/es/date-picker/locale/zh_CN';
 import dayjs from 'dayjs';
+import { putRemindAction, updateInfo } from '../../store/modules/news';
+import type { Info } from '../../store/modules/news';
 
 interface FormInfos {
   approvername: string;
@@ -92,6 +94,7 @@ export default function Apply() {
       (v.state === approverType || defaultType === approverType) &&
       (v.note as string).includes(searchWord)
   );
+  const newsInfo = useAppSelector((state) => state.news.info);
   const dispatch = useAppDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
@@ -105,10 +108,6 @@ export default function Apply() {
 
   const showModal = () => {
     setIsModalOpen(true);
-  };
-
-  const handleOk = () => {
-    setIsModalOpen(false);
   };
 
   const handleCancel = () => {
@@ -148,11 +147,16 @@ export default function Apply() {
             dispatch(updateApplyList(rets as Infos[]));
           }
         });
+        dispatch(
+          putRemindAction({ userid: applyList.approverid, approver: true })
+        );
       }
     });
   };
 
-  const onFinishFailed = () => {};
+  const onFinishFailed = ({ values }: { values: FormInfos }) => {
+    console.log('Failed:', values);
+  };
 
   useEffect(() => {
     if (_.isEmpty(applyList)) {
@@ -168,6 +172,21 @@ export default function Apply() {
       );
     }
   }, [applyList, usersInfos, dispatch]);
+
+  useEffect(() => {
+    if (newsInfo.applicant) {
+      dispatch(
+        putRemindAction({ userid: usersInfos._id as string, applicant: false })
+      ).then((action) => {
+        const { errcode, info } = (
+          action.payload as { [index: string]: unknown }
+        ).data as { [index: string]: unknown };
+        if (errcode === 0) {
+          dispatch(updateInfo(info as Info));
+        }
+      });
+    }
+  }, [dispatch, usersInfos, newsInfo]);
 
   return (
     <div>
@@ -208,7 +227,6 @@ export default function Apply() {
       <Modal
         title="添加审批"
         open={isModalOpen}
-        onOk={handleOk}
         onCancel={handleCancel}
         footer={null}
       >
